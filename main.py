@@ -29,17 +29,17 @@ mbti_jobs = {
     "ESFP": ("연예인 🎤", "패션 디자이너 👗", "이벤트 플래너 🎪")
 }
 
-# 🌈 컬러풀 사이드바
+# 🌈 MBTI 선택
 st.sidebar.markdown("## 💖 당신의 MBTI는?")
-mbti = st.sidebar.selectbox("MBTI 유형을 선택해주세요", list(mbti_jobs.keys()), index=0)
+mbti = st.sidebar.selectbox("MBTI 유형을 선택해주세요 👇", sorted(mbti_jobs.keys()))
 
-# 🎁 결과 카드
+# 🧾 선택한 MBTI에 따라 직업 추천
 st.markdown("---")
 st.subheader(f"💼 {mbti} 유형에게 어울리는 직업 추천 💼")
 
-job_list = mbti_jobs[mbti]
+# 🎁 추천 직업 출력
+job_list = mbti_jobs.get(mbti, [])
 
-# 💎 화려한 카드 형식 출력
 for job in job_list:
     st.markdown(f"""
         <div style="background-color: #ffeaa7; padding: 20px; border-radius: 15px; margin-bottom: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
@@ -47,7 +47,7 @@ for job in job_list:
         </div>
     """, unsafe_allow_html=True)
 
-# 🌟 추가 정보
+# 📌 안내
 st.markdown("""
 <hr>
 <h4 style='text-align: center; color: #636e72;'>🎓 이 웹앱은 진로 교육을 위한 목적으로 제작되었습니다.</h4>
