@@ -1,55 +1,81 @@
 import streamlit as st
 
-# 🎨 앱 설정
-st.set_page_config(page_title="🌟 MBTI 진로 추천 웹앱", page_icon="💼", layout="wide")
-
-# 🎆 헤더
-st.markdown("""
-    <h1 style='text-align: center; color: #6c5ce7;'>✨ MBTI로 알아보는 나의 진로 ✨</h1>
-    <p style='text-align: center; font-size: 20px;'>당신의 MBTI를 선택하면, 어울리는 직업을 화려하게 추천해드려요! 💡🚀</p>
-""", unsafe_allow_html=True)
-
-# 🧠 MBTI 목록과 직업 매칭
-mbti_jobs = {
-    "INTJ": ("전략 컨설턴트 🧠", "연구원 🔬", "시스템 설계자 🧩"),
-    "INTP": ("데이터 과학자 📊", "이론 물리학자 ⚛️", "프로그래머 💻"),
-    "ENTJ": ("CEO 🧑‍💼", "프로젝트 매니저 🗂️", "변호사 ⚖️"),
-    "ENTP": ("스타트업 창업가 🚀", "광고 기획자 🎨", "정치 분석가 🧭"),
-    "INFJ": ("상담사 🧘‍♀️", "작가 ✍️", "교육자 👩‍🏫"),
-    "INFP": ("시인 📜", "일러스트레이터 🎨", "사회복지사 ❤️"),
-    "ENFJ": ("멘토 🌟", "홍보 담당자 📢", "교육 컨설턴트 🧑‍🏫"),
-    "ENFP": ("브랜드 디자이너 🎨", "여행 작가 🌍", "인플루언서 📸"),
-    "ISTJ": ("회계사 🧾", "공무원 🏛️", "데이터 분석가 📉"),
-    "ISFJ": ("간호사 🏥", "교사 🧑‍🏫", "사서 📚"),
-    "ESTJ": ("경영 관리자 🧑‍💼", "군 장교 🪖", "프로젝트 리더 📋"),
-    "ESFJ": ("이벤트 기획자 🎉", "상담 교사 🧑‍🏫", "호텔 매니저 🏨"),
-    "ISTP": ("기계공 🔧", "파일럿 🛫", "경찰 👮"),
-    "ISFP": ("플로리스트 🌸", "사진작가 📷", "헤어디자이너 💇"),
-    "ESTP": ("스포츠 트레이너 🏋️", "기업가 💼", "세일즈 전문가 📈"),
-    "ESFP": ("연예인 🎤", "패션 디자이너 👗", "이벤트 플래너 🎪")
+# MBTI 정보
+mbti_info = {
+    "INTJ": {
+        "title": "🧠 INTJ - 전략가형",
+        "description": "논리적이고 분석적인 사고를 가진 전략가입니다. 혼자 있는 것을 즐기며 독립적인 성향이 강합니다.",
+        "tips": [
+            "🧩 계획적이고 명확한 상담 구조를 제공해 주세요.",
+            "🗂️ 사전 정보를 충분히 주고 스스로 생각할 시간을 주세요.",
+            "📊 논리적 근거와 자료를 활용한 피드백을 선호합니다."
+        ],
+        "example": [
+            "**상담교사:** 최근 진로에 대해 어떤 생각을 하고 있어요?",
+            "**INTJ 학생:** 구체적인 계획은 아직 없지만, 혼자서 관련 자료들을 조사해 보고 있어요.",
+            "**상담교사:** 좋아요. 그 자료들을 바탕으로 내가 도와줄 수 있는 부분이 있다면 말해줘요. 필요한 정보나 구조적인 가이드를 함께 만들어보자구요. 📘"
+        ]
+    },
+    "ENFP": {
+        "title": "🌈 ENFP - 활동가형",
+        "description": "열정적이고 창의적이며 다른 사람들과의 교류를 즐깁니다. 감정이입 능력이 뛰어납니다.",
+        "tips": [
+            "🎨 감성적 공감과 따뜻한 피드백이 중요해요.",
+            "📢 자유롭게 자신의 이야기를 펼칠 수 있도록 도와주세요.",
+            "🧶 너무 틀에 얽매인 방식보다 유연한 접근이 좋아요."
+        ],
+        "example": [
+            "**상담교사:** 요즘 학교생활은 어때요?",
+            "**ENFP 학생:** 요즘은 뭔가 재밌는 걸 하고 싶은데 어디에 에너지를 써야 할지 모르겠어요.",
+            "**상담교사:** 그런 마음이 드는 건 정말 멋진 감정이에요! 😄 혹시 최근에 관심이 생긴 분야가 있다면 이야기해 줄래요? 자유롭게 편하게 말해도 돼요."
+        ]
+    },
+    "ISFJ": {
+        "title": "💖 ISFJ - 수호자형",
+        "description": "배려심이 많고 책임감 있는 성격으로, 조용하지만 헌신적인 태도를 보입니다.",
+        "tips": [
+            "🛡️ 부드럽고 안정감 있는 상담 환경을 만들어 주세요.",
+            "📘 관심과 칭찬을 표현하면 더 마음을 열 수 있어요.",
+            "🎗️ 실용적인 조언과 구체적인 안내를 좋아합니다."
+        ],
+        "example": [
+            "**상담교사:** 요즘 힘든 일은 없어요?",
+            "**ISFJ 학생:** 그냥 별일은 없는데, 뭔가 계속 실수하는 것 같아서 자존감이 낮아져요.",
+            "**상담교사:** 그럴 때도 있죠. 😊 하지만 당신은 항상 성실하고 책임감 있게 행동하고 있어요. 작은 실수보다 당신의 태도가 훨씬 더 소중하답니다. 함께 차근차근 정리해볼까요?"
+        ]
+    }
 }
 
-# 🌈 MBTI 선택
-st.sidebar.markdown("## 💖 당신의 MBTI는?")
-mbti = st.sidebar.selectbox("MBTI 유형을 선택해주세요 👇", sorted(mbti_jobs.keys()))
+# 앱 설정
+st.set_page_config(page_title="학생 MBTI 상담 도우미 💬", layout="centered", page_icon="🎓")
+st.title("💬 학생 MBTI 상담 도우미")
+st.markdown("학생의 MBTI를 선택하면, 해당 성격의 특징과 효과적인 상담 팁과 대화 예시를 알려드릴게요! 😊")
 
-# 🧾 선택한 MBTI에 따라 직업 추천
-st.markdown("---")
-st.subheader(f"💼 {mbti} 유형에게 어울리는 직업 추천 💼")
+# MBTI 선택
+mbti = st.selectbox("🔍 학생의 MBTI를 선택해주세요:", list(mbti_info.keys()))
 
-# 🎁 추천 직업 출력
-job_list = mbti_jobs.get(mbti, [])
+# 정보 표시
+if mbti:
+    st.markdown("---")
+    st.subheader(mbti_info[mbti]["title"])
+    st.markdown(f"**📌 성격 특징:**\n\n{mbti_info[mbti]['description']}")
+    
+    st.markdown("**🛠️ 상담 팁:**")
+    for tip in mbti_info[mbti]["tips"]:
+        st.markdown(f"- {tip}")
+    
+    st.markdown("**💬 상담 대화 예시:**")
+    with st.expander("📖 예시 대화 보기"):
+        for line in mbti_info[mbti]["example"]:
+            st.markdown(f"{line}")
 
-for job in job_list:
-    st.markdown(f"""
-        <div style="background-color: #ffeaa7; padding: 20px; border-radius: 15px; margin-bottom: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
-            <h3 style="color: #2d3436;">{job}</h3>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("---")
+    st.success("📚 학생의 성향을 이해하고 공감하는 상담이 최고의 교육입니다!")
 
-# 📌 안내
+# 하단 문구
 st.markdown("""
-<hr>
-<h4 style='text-align: center; color: #636e72;'>🎓 이 웹앱은 진로 교육을 위한 목적으로 제작되었습니다.</h4>
-<p style='text-align: center;'>※ 직업 추천은 참고용입니다. 당신의 가능성은 무한하니까요! 🚀</p>
+<div style='text-align: center; font-size: 16px; margin-top: 30px;'>
+    🙌 상담은 학생과의 믿음을 쌓는 과정입니다. <br>
+    <b>진심 어린 관심</b>과 <b>MBTI 이해</b>로 보다 깊은 대화를 시작해 보세요!
+</div>
 """, unsafe_allow_html=True)
